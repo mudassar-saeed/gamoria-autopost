@@ -7,8 +7,15 @@
     "publish_at": "2026-11-21T18:30:00+05:00",
     "platforms": {
       "youtube": {
-        "status": "pending"
+        "status": "posted",
+        "attempts": 1,
+        "last_attempt": "2026-11-21T13:38:20+00:00",
+        "id": "-T276Yyef_I",
+        "url": "https://youtube.com/shorts/-T276Yyef_I",
+        "posted_at": "2026-11-21T13:38:22+00:00"
       }
-    }
+    },
+    "done": true,
+    "video_deleted": true
   }
 ]
