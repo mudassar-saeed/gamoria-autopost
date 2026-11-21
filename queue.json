@@ -26,9 +26,16 @@
     "publish_at": "2026-11-21T19:00:00+05:00",
     "platforms": {
       "youtube": {
-        "status": "pending"
+        "status": "posted",
+        "attempts": 1,
+        "last_attempt": "2026-11-21T14:12:08+00:00",
+        "id": "ba4M34vKTKE",
+        "url": "https://youtube.com/shorts/ba4M34vKTKE",
+        "posted_at": "2026-11-21T14:12:11+00:00"
       }
-    }
+    },
+    "done": true,
+    "video_deleted": true
   },
   {
     "id": "04_xqc_hunting",
