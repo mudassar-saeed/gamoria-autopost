@@ -1,5 +1,20 @@
 [
   {
+    "id": "01_xqc_bike_flying",
+    "video": "videos/01_xqc_bike_flying.mp4",
+    "title": "xQc says 'watch this' and sends his bike flying in GTA 6",
+    "caption": "",
+    "publish_at": "2026-11-20T20:19:00+05:00",
+    "platforms": {
+      "youtube": {
+        "status": "posted",
+        "note": "uploaded manually"
+      }
+    },
+    "done": true,
+    "video_deleted": true
+  },
+  {
     "id": "02_xqc_dirt_bike_race",
     "video": "videos/02_xqc_dirt_bike_race.mp4",
     "title": "xQc gets pushed back in a GTA 6 dirt bike race and fights back",
