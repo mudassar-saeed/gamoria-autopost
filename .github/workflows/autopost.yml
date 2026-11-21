@@ -1,0 +1,61 @@
+name: Autopost
+
+on:
+  schedule:
+    # Every 30 minutes (UTC). GitHub can start scheduled runs a few minutes late.
+    - cron: "5,35 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: autopost
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Cheap check with no installs, so idle runs finish in seconds.
+      - name: Anything due?
+        id: due
+        run: python scripts/post.py --check
+
+      - name: Install dependencies
+        if: steps.due.outputs.due == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Post due clips
+        if: steps.due.outputs.due == 'true'
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: python scripts/post.py
+
+      - name: Save queue
+        if: always() && steps.due.outputs.due == 'true'
+        run: |
+          git config user.name "autopost-bot"
+          git config user.email "autopost-bot@users.noreply.github.com"
+          git add -A queue.json videos
+          if git diff --cached --quiet; then
+            echo "Nothing to save."
+            exit 0
+          fi
+          git commit -m "autopost: update queue"
+          for i in 1 2 3; do
+            git pull --rebase && git push && exit 0
+            sleep 5
+          done
+          exit 1
