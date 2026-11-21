@@ -6,9 +6,9 @@ How it works:
 
 1. On your PC, add clips to the queue with `scripts/plan.py`. It copies the MP4 from your clipper's `clips\out` folder into `videos/` and writes the title, caption and time into `queue.json`.
 2. You push to GitHub.
-3. Every 30 minutes GitHub checks the queue. Anything whose time has passed gets posted, `queue.json` is updated with the post IDs, and the video file is deleted from the repo.
+3. Every 15 minutes GitHub checks the queue. Anything whose time has passed gets posted, `queue.json` is updated with the post IDs, and the video file is deleted from the repo.
 
-**Timing:** clips go out within about 30–45 minutes after the scheduled time, not to the exact minute. GitHub sometimes starts scheduled runs late.
+**Timing:** clips go out within about 15–30 minutes after the scheduled time, not to the exact minute. GitHub sometimes starts scheduled runs late.
 
 ---
 
@@ -18,7 +18,7 @@ You need Python and Git on your PC. Takes about an hour, plus waiting for Google
 
 ### 1. Create the GitHub repo
 
-1. On github.com, create a **new private repository**, for example `gamoria-autopost`. Leave it empty.
+1. On github.com, create a **new public repository**, for example `gamoria-autopost`. Leave it empty.
 2. In this folder (`D:\Automation\autopost`) run:
 
 ```
@@ -50,22 +50,23 @@ Sign in with the Google account that owns the channel. It prints three values fo
 
 **YouTube audit (required for public posts).** Videos uploaded through the API by an unaudited project are locked to **private**. Apply for the audit here: <https://support.google.com/youtube/contact/yt_api_form>. Until it's approved, uploads land as private and you can make them public by hand in YouTube Studio.
 
-### 3. Instagram API
+### 3. Instagram API (no Facebook Page needed)
 
-Your Instagram must be a **Business account** linked to a **Facebook Page**:
-Instagram app → Settings → Account type and tools → Switch to professional → Business, then link it to a Facebook Page (create one called "Citizen of Gamoria" if needed).
+This uses Instagram's "API with Instagram login". Instagram downloads each video from its public link in this repo, which is why the repo is public. Your tokens stay hidden in GitHub Secrets.
 
-1. Go to <https://developers.facebook.com> → **My Apps → Create app** → use case **Other** → type **Business**.
-2. Add the **Instagram** product, choosing **API setup with Facebook login**.
-3. Open **Tools → Graph API Explorer**, pick your app, and generate a **User token** with these permissions:
-   `instagram_basic`, `instagram_content_publish`, `pages_show_list`, `pages_read_engagement`, `business_management`.
-4. Make it long-lived: **Tools → Access Token Debugger** → paste the token → **Extend Access Token**.
-5. In Graph API Explorer, with the long-lived token, run `me/accounts`. Copy your Page's `access_token` (a Page token from a long-lived user token does not expire) and its `id`.
-6. Run `PAGE_ID?fields=instagram_business_account` (with your Page ID). The `id` it returns is your **IG_USER_ID**.
+Your Instagram must be a **Business** (or Creator) account: Instagram app → Settings → Account type and tools → Switch to professional account.
+
+1. Go to <https://developers.facebook.com> → **My Apps → Create app**. Name it `Gamoria Autopost`.
+2. For the use case, choose **Manage messaging & content on Instagram**. Skip connecting a business portfolio if asked. Finish creating the app.
+3. In the app, open **Instagram → API setup with Instagram login**.
+4. Under **Generate access tokens**, click **Add account** and log in as **@citizenofgamoria**. Allow the permissions, including content publishing.
+5. Next to the account, click **Generate token**. Copy the token. This is **IG_ACCESS_TOKEN** (valid 60 days; the weekly job renews it).
+6. The number shown next to the account name is its Instagram user ID. This is **IG_USER_ID**.
+7. **Token renewal (GH_PAT):** on GitHub go to **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**. Repository access: **Only select repositories → gamoria-autopost**. Permissions: **Secrets → Read and write**. Expiration: the longest offered. Copy the token.
 
 ### 4. Add GitHub secrets
 
-GitHub → your repo → **Settings → Secrets and variables → Actions → New repository secret**. Add all five:
+GitHub → your repo → **Settings → Secrets and variables → Actions → New repository secret**. Add all six:
 
 | Secret | Value |
 |---|---|
@@ -73,7 +74,8 @@ GitHub → your repo → **Settings → Secrets and variables → Actions → Ne
 | `YT_CLIENT_SECRET` | from step 2.6 |
 | `YT_REFRESH_TOKEN` | from step 2.6 |
 | `IG_USER_ID` | from step 3.6 |
-| `IG_ACCESS_TOKEN` | the Page access token from step 3.5 |
+| `IG_ACCESS_TOKEN` | from step 3.5 |
+| `GH_PAT` | from step 3.7 (lets the weekly job save the renewed Instagram token) |
 
 Never put these in a file in the repo.
 
@@ -128,7 +130,7 @@ Captions come from the clipper's `.txt` file next to each MP4: the title, the cr
 | `max_attempts` | Retries before an upload is marked failed |
 | `youtube.privacy_status` | `public`, `unlisted` or `private` |
 | `youtube.use_publish_at` | `true` = upload early and let YouTube publish at the exact minute (works once your project passes the audit) |
-| `instagram.mode` | `facebook` (default, repo can be private). `instagram` needs a public repo and `public_video_base_url` set to `https://raw.githubusercontent.com/USER/REPO/main` |
+| `instagram.mode` | `instagram` (current: no Facebook Page, needs this repo public and `public_video_base_url` set). `facebook` uploads the file directly but needs a Business account linked to a Facebook Page |
 
 ## When something fails
 
@@ -140,5 +142,6 @@ Captions come from the clipper's `.txt` file next to each MP4: the title, the cr
 ## Limits to know
 
 - GitHub rejects files over **100 MB**. Your Shorts are 15–40 MB.
-- A private repo on GitHub's free plan gets 2,000 Actions minutes a month. Each run is billed as at least 1 minute, so checks every 30 minutes use about 1,450 minutes a month, plus a few minutes per post. Don't make the schedule more frequent on a private repo.
+- Public repos get unlimited free Actions minutes. If you ever make the repo private, change the schedule back to every 30 minutes and switch Instagram to `facebook` mode (needs a Facebook Page).
+- Each clip is publicly downloadable from the repo between being queued and being posted.
 - Keep crediting the streamer in every caption. The clipper already adds the credit line.

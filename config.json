@@ -1,21 +1,26 @@
 {
   "utc_offset": "+05:00",
-  "auto_slots": ["13:00", "19:00", "22:00"],
-  "default_platforms": ["youtube", "instagram"],
+  "auto_slots": [
+    "13:00",
+    "19:00",
+    "22:00"
+  ],
+  "default_platforms": [
+    "youtube",
+    "instagram"
+  ],
   "channel_cta": "🔔 Subscribe to Citizen of Gamoria for the best GTA 6 moments",
   "delete_video_after_post": true,
   "max_attempts": 3,
-
   "youtube": {
     "privacy_status": "public",
     "category_id": "20",
     "use_publish_at": false
   },
-
   "instagram": {
-    "mode": "facebook",
+    "mode": "instagram",
     "api_version": "v25.0",
-    "public_video_base_url": "",
+    "public_video_base_url": "https://raw.githubusercontent.com/mudassar-saeed/gamoria-autopost/main",
     "share_to_feed": true
   }
 }
