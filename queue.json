@@ -17,5 +17,41 @@
     },
     "done": true,
     "video_deleted": true
+  },
+  {
+    "id": "03_xqc_map_size",
+    "video": "videos/03_xqc_map_size.mp4",
+    "title": "xQc realises how big the GTA 6 map is",
+    "caption": "xQc realises how big the GTA 6 map is\n\nCredit: xQc (https://www.youtube.com/watch?v=UAw-wZeA0F8)\n\n🔔 Subscribe to Citizen of Gamoria for the best GTA 6 moments\n\n#gta6 #xqc #gta6map #shorts",
+    "publish_at": "2026-11-21T19:00:00+05:00",
+    "platforms": {
+      "youtube": {
+        "status": "pending"
+      }
+    }
+  },
+  {
+    "id": "04_xqc_hunting",
+    "video": "videos/04_xqc_hunting.mp4",
+    "title": "xQc goes hunting in GTA 6: 'I've played enough Call of the Wild'",
+    "caption": "xQc goes hunting in GTA 6: 'I've played enough Call of the Wild'\n\nCredit: xQc (https://www.youtube.com/watch?v=Bm2THrfhonQ)\n\n🔔 Subscribe to Citizen of Gamoria for the best GTA 6 moments\n\n#gta6 #xqc #gtavi #shorts",
+    "publish_at": "2026-11-21T22:00:00+05:00",
+    "platforms": {
+      "youtube": {
+        "status": "pending"
+      }
+    }
+  },
+  {
+    "id": "05_xqc_taco",
+    "video": "videos/05_xqc_taco.mp4",
+    "title": "xQc orders a taco clasico in GTA 6 and it goes wrong",
+    "caption": "xQc orders a taco clasico in GTA 6 and it goes wrong\n\nCredit: xQc (https://www.youtube.com/watch?v=L7KXEeEePlo)\n\n🔔 Subscribe to Citizen of Gamoria for the best GTA 6 moments\n\n#gta6 #xqc #gtavi #shorts",
+    "publish_at": "2026-11-22T13:00:00+05:00",
+    "platforms": {
+      "youtube": {
+        "status": "pending"
+      }
+    }
   }
 ]
