@@ -60,9 +60,16 @@
     "publish_at": "2026-11-21T22:00:00+05:00",
     "platforms": {
       "youtube": {
-        "status": "pending"
+        "status": "posted",
+        "attempts": 1,
+        "last_attempt": "2026-11-21T17:36:31+00:00",
+        "id": "mcH56yTBsV8",
+        "url": "https://youtube.com/shorts/mcH56yTBsV8",
+        "posted_at": "2026-11-21T17:36:34+00:00"
       }
-    }
+    },
+    "done": true,
+    "video_deleted": true
   },
   {
     "id": "05_xqc_taco",
