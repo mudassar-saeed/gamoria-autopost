@@ -98,7 +98,7 @@ def add_one(mp4, queue, cfg, args, tz):
     if not mp4.exists():
         print(f"Not found: {mp4}")
         return False
-    item_id = mp4.stem
+    item_id = getattr(args, "id", None) or mp4.stem
     if any(i["id"] == item_id for i in queue):
         print(f"Already queued: {item_id}")
         return False
@@ -114,7 +114,7 @@ def add_one(mp4, queue, cfg, args, tz):
     platforms = args.platforms.split(",") if args.platforms else cfg.get("default_platforms", ["youtube", "instagram"])
 
     VIDEOS.mkdir(exist_ok=True)
-    dest = VIDEOS / mp4.name
+    dest = VIDEOS / f"{item_id}.mp4"
     shutil.copy2(mp4, dest)
     size_mb = dest.stat().st_size / 1e6
     if size_mb > 95:
@@ -122,7 +122,7 @@ def add_one(mp4, queue, cfg, args, tz):
 
     queue.append({
         "id": item_id,
-        "video": f"videos/{mp4.name}",
+        "video": f"videos/{dest.name}",
         "title": title,
         "caption": build_caption(title, tags, credit, other, cfg),
         "publish_at": when.isoformat(),
@@ -142,6 +142,7 @@ def main():
     a.add_argument("--auto", action="store_true", help="use the next free slot from config.json")
     a.add_argument("--title")
     a.add_argument("--platforms", help="youtube,instagram")
+    a.add_argument("--id", help="queue id and video file name (default: the mp4 name)")
 
     aa = sub.add_parser("add-all")
     aa.add_argument("folder")
@@ -164,7 +165,7 @@ def main():
             save(queue)
 
     elif args.cmd == "add-all":
-        args.at, args.title = None, None
+        args.at, args.title, args.id = None, None, None
         added = 0
         for mp4 in sorted(Path(args.folder).glob("*.mp4")):
             added += add_one(mp4, queue, cfg, args, tz)
